@@ -23,7 +23,7 @@ The Koch-Challange is a hackathon project for the automated extraction, classifi
 ### 1. clone repository
 
 ```bash
-git clone https://your-repo-url.git
+git clone https://github.com/dek0123/Koch-Challenge.git
 cd ...
 ```
 
@@ -43,7 +43,8 @@ pip install -r requirements.txt
 
 ## Project information
 
-**Project team**: Josua Ehret, Finn Rehm,  
+**Project team**: Josua Ehret, Finn Rehm, 
+
 **Project period**: 09.05 to 11.05 Hackathon 2025
 
 ### Aim of the project
@@ -55,7 +56,6 @@ The aim of this project is to develop a system that automatically analyzes and s
 ### Project structure
 
 ```mermaid
-
 ├── data/
 │ ├── input/
 │ │ ├── catalog.csv
@@ -67,15 +67,15 @@ The aim of this project is to develop a system that automatically analyzes and s
 │ └── [documentation]
 │
 └── src/
- ├── document_parser.py
- ├── product_classifier.py
- ├─── xml_generator.py
- └── interface.py
+  ├── document_parser.py
+  ├── product_classifier.py
+  ├── xml_generator.py
+  └── interface.py
 ```
 
 - **/data**: Data and product catalog  
 - **/docs**: Documentation and guidelines  
-- **/src**: Source code for analysis, classification and export  
+- **/src**: Source code for parser, classifier
 - **/output**: Exported XML files  
 
 ### Product & service catalog
