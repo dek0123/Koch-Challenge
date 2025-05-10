@@ -1,6 +1,6 @@
-# Koch-Challange
+# Koch-Challenge
 
-The Koch-Challange is a hackathon project for the automated extraction, classification and conversion of service specifications into structured offer data for ERP systems.
+The Koch-Challenge is a hackathon project for the automated extraction, classification and conversion of service specifications into structured offer data for ERP systems.
 
 ## Table of Contents
 
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
 ## Project information
 
-**Project team**: Josua Ehret, Finn Rehm, 
+**Project team**: Josua Ehret, Finn Rehm, Dionys Müller, Dejan Tankoski
 
 **Project period**: 09.05 to 11.05 Hackathon 2025
 
@@ -57,6 +57,8 @@ The aim of this project is to develop a system that automatically analyzes and s
 
 ```mermaid
 ├── data/
+│ ├── database/
+│ │ └── sku_database.sqlite
 │ ├── input/
 │ │ ├── catalog.csv
 │ │ └── examples/
@@ -75,7 +77,7 @@ The aim of this project is to develop a system that automatically analyzes and s
 
 - **/data**: Data and product catalog  
 - **/docs**: Documentation and guidelines  
-- **/src**: Source code for parser, classifier
+- **/src**: Source code for parser, classifier and interface...
 - **/output**: Exported XML files  
 
 ### Product & service catalog
