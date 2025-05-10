@@ -1,5 +1,6 @@
 from model import response
 import json
+import re
 
 prompt_get_context = "Extrahieren alle Produkte mit ihrer Positionsnummer. Übernehme als Description den gesamten Text des Produkts"
 
@@ -66,5 +67,16 @@ def get_json(file_path):
 
     # get Features like SKU, Name etc in JSON format by the LLM
     jsons = response(context, prompt_get_json)
+
+    match = re.search(r'\[\s*\{.*?\}\s*\]', jsons, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group())
+        except json.JSONDecodeError:
+            print("Found JSON-like text but could not decode.")
+            return None
+    else:
+        print("No JSON array found in the text.")
+        return None
 
     return jsons
