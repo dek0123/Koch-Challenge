@@ -18,26 +18,23 @@ def process_response(response):
     combined_text = "\n\n".join(block.text for block in text_blocks)
     return combined_text
 
-def parse_pdf(input_file_path: str, output_file_path: str):
-    """parse pdf file to markdown
+def parse(input_file_path: str, output_file_path: str):
+    """
+    parse pdf file to markdown
 
     Args:
         input_file: str  path to file
+        output_file: str path to store the md file
     """
     if Path(input_file_path).suffix.lower() != ".pdf":
         raise ValueError("Only PDF files are supported.")
 
     model = ChatOpenAI(
-    openai_api_key=os.getenv("HACKATHON_API_KEY"),
+    openai_api_key="YOUR_API_KEY",
     openai_api_base="https://openrouter.ai/api/v1",
     model_name="gpt-4o",
     )
     parser = MegaParseVision(model)
     response = process_file(parser, input_file_path)
     write_md(output_file_path, process_response(response))
-    return response
-
-if __name__ == "__main__":
-    parse_pdf("data/Example-1/service-specification.pdf", "data/output/Example1.md")
-    parse_pdf("data/Example-2/service-specification.pdf", "data/output/Example2.md")
-    
+    return output_file_path
