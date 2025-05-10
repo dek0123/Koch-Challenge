@@ -119,8 +119,8 @@ The aim of this project is to develop a system that automatically analyzes and s
 ```xml
 <?xml version="1.0" encoding="UTF-8"? >
 <order>
- <customerId>102736</customerId>
- <commission>Cerdia control room</commission>
+ <customerId>XXX-CUSTOMERID</customerId>
+ <commission>XXX control room</commission>
  <type>A</type>
  <shippingConditionId>2</shippingConditionId>
  <items>
