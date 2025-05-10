@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de" class="has-aside-left has-aside-mobile-transition has-navbar-fixed-top has-aside-expanded">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Management</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/bulma-min.css" id="bulma-theme-light">
+  <link rel="stylesheet" href="css/mdi-min.css">
+  <link rel="stylesheet" href="css/font-awesome-min.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+<div id="app">
+  <nav id="navbar-main" class="navbar is-fixed-top">
+    <div class="navbar-brand">
+      <a class="navbar-item is-hidden-desktop jb-aside-mobile-toggle">
+        <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
+      </a>
+    </div>
+    <div class="navbar-brand is-right">
+      <a class="navbar-item is-hidden-desktop jb-navbar-menu-toggle" data-target="navbar-menu">
+        <span class="icon"><i class="mdi mdi-dots-vertical"></i></span>
+      </a>
+    </div>
+    <div class="navbar-menu fadeIn animated faster" id="navbar-menu">
+      <div class="navbar-end">
+        <div class="level-item">
+          <div class="control has-icons-left">
+            <input id="searchInput" placeholder="Suchen..." class="input">
+            <span class="icon is-left">
+              <i class="fas fa-search"></i>
+            </span>
+          </div>
+        </div>
+        <div class="level-item">
+          <div class="buttons is-right">
+            <a href="#" id="submitButton" class="button is-primary">
+              <span class="icon"><i class="mdi mdi-send-check"></i></span>
+              <span>An ERP senden</span>
+            </a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <div class="field">
+            <label class="switch" title="Dunkelmodus umschalten">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="slider"></span>
+            </label>
+            <span class="theme-icon">
+              <i class="fas fa-moon"></i>
+            </span>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
+          <a class="navbar-link is-arrowless">
+            <div class="is-user-name"><span>Benutzer</span></div>
+            <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
+          </a>
+          <div class="navbar-dropdown">
+            <a href="#" class="navbar-item">
+              <span class="icon"><i class="mdi mdi-account"></i></span>
+              <span>Mein Profil</span>
+            </a>
+            <a class="navbar-item">
+              <span class="icon"><i class="mdi mdi-settings"></i></span>
+              <span>Einstellungen</span>
+            </a>
+            <hr class="navbar-divider">
+            <a class="navbar-item">
+              <span class="icon"><i class="mdi mdi-logout"></i></span>
+              <span>Abmelden</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <aside class="aside is-placed-left is-expanded">
+    <div class="aside-tools">
+      <div class="aside-tools-label">
+        <span><b>Order</b> Management</span>
+      </div>
+      <div class="aside-tools-toggle">
+        <span class="icon toggle-sidebar-icon"><i class="fas fa-chevron-left"></i></span>
+      </div>
+    </div>
+
+    <div class="menu is-menu-main">
+      <div class="menu-main-container">
+        <p class="menu-label">
+          <span>Offene Aufträge</span>
+        </p>
+        <ul class="menu-list file-list" id="ordersList">
+          <!-- XML files will be listed here -->
+          <li><a href="#" class="is-loading"><span class="icon"><i class="fas fa-spinner fa-spin"></i></span><span class="menu-item-label">Lade Dateien...</span></a></li>
+        </ul>
+
+        <p class="menu-label" id="categoryLabel">
+          <span>Filter nach Kategorie</span>
+          <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </p>
+        <ul class="menu-list" id="categoryFilters">
+          <li><a href="#" data-filter="all" class="filter-active"><span class="icon"><i class="fas fa-th-list"></i></span><span class="menu-item-label">Alle anzeigen</span></a></li>
+          <li><a href="#" data-filter="element"><span class="icon"><i class="fas fa-cube"></i></span><span class="menu-item-label">Elemente</span></a></li>
+          <li><a href="#" data-filter="accessory"><span class="icon"><i class="fas fa-tools"></i></span><span class="menu-item-label">Zubehör</span></a></li>
+          <li><a href="#" data-filter="service"><span class="icon"><i class="fas fa-cog"></i></span><span class="menu-item-label">Services</span></a></li>
+        </ul>
+
+        <p class="menu-label" id="elementTypesLabel">
+          <span>Element-Typen</span>
+          <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </p>
+        <ul class="menu-list" id="elementTypeFilters">
+          <li><a href="#" data-filter="holztueren"><span class="icon"><i class="fas fa-door-closed"></i></span><span class="menu-item-label">Holztüren</span></a></li>
+          <li><a href="#" data-filter="stahltueren"><span class="icon"><i class="fas fa-door-open"></i></span><span class="menu-item-label">Stahltüren</span></a></li>
+          <li><a href="#" data-filter="rohrrahmentueren"><span class="icon"><i class="fas fa-grip-lines"></i></span><span class="menu-item-label">Rohrrahmentüren</span></a></li>
+          <li><a href="#" data-filter="tore"><span class="icon"><i class="fas fa-warehouse"></i></span><span class="menu-item-label">Tore</span></a></li>
+          <li><a href="#" data-filter="stahlzargen"><span class="icon"><i class="fas fa-border-style"></i></span><span class="menu-item-label">Stahlzargen</span></a></li>
+          <li><a href="#" data-filter="drehtuerantriebe"><span class="icon"><i class="fas fa-sync-alt"></i></span><span class="menu-item-label">Drehtürantriebe</span></a></li>
+          <li><a href="#" data-filter="haustueren"><span class="icon"><i class="fas fa-home"></i></span><span class="menu-item-label">Haustüren</span></a></li>
+          <li><a href="#" data-filter="fluchtweg"><span class="icon"><i class="fas fa-running"></i></span><span class="menu-item-label">Fluchtwegssicherung</span></a></li>
+        </ul>
+
+        <p class="menu-label" id="featuresLabel">
+          <span>Produkteigenschaften</span>
+          <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </p>
+        <div class="filter-section">
+          <div class="icon-grid" id="featureFilters">
+            <div class="icon-box" data-filter="schallschutz">
+              <i class="fas fa-volume-mute"></i>
+              <span class="icon-label">Schallschutz</span>
+            </div>
+            <div class="icon-box" data-filter="einbruchschutz">
+              <i class="fas fa-shield-alt"></i>
+              <span class="icon-label">Einbruchschutz</span>
+            </div>
+            <div class="icon-box" data-filter="brandschutz">
+              <i class="fas fa-fire-extinguisher"></i>
+              <span class="icon-label">Brandschutz</span>
+            </div>
+            <div class="icon-box" data-filter="rauchschutz">
+              <i class="fas fa-smoking-ban"></i>
+              <span class="icon-label">Rauchschutz</span>
+            </div>
+            <div class="icon-box" data-filter="nassraum">
+              <i class="fas fa-shower"></i>
+              <span class="icon-label">Nassraum</span>
+            </div>
+            <div class="icon-box" data-filter="feuchtraum">
+              <i class="fas fa-tint"></i>
+              <span class="icon-label">Feuchtraum</span>
+            </div>
+            <div class="icon-box" data-filter="klimaklasse">
+              <i class="fas fa-thermometer-half"></i>
+              <span class="icon-label">Klimaklasse</span>
+            </div>
+            <div class="icon-box" data-filter="aussentueren">
+              <i class="fas fa-door-open"></i>
+              <span class="icon-label">Außentüren</span>
+            </div>
+            <div class="icon-box" data-filter="pfosten-riegel">
+              <i class="fas fa-project-diagram"></i>
+              <span class="icon-label">Pfosten-Riegel</span>
+            </div>
+            <div class="icon-box" data-filter="waermedaemmung">
+              <i class="fas fa-temperature-low"></i>
+              <span class="icon-label">Wärmedämmung</span>
+            </div>
+            <div class="icon-box" data-filter="strahlenschutz">
+              <i class="fas fa-radiation"></i>
+              <span class="icon-label">Strahlenschutz</span>
+            </div>
+            <div class="icon-box" data-filter="barrierefreiheit">
+              <i class="fas fa-universal-access"></i>
+              <span class="icon-label">Barrierefreiheit</span>
+            </div>
+            <div class="icon-box" data-filter="einfachfalz">
+              <i class="fas fa-align-left"></i>
+              <span class="icon-label">Einfachfalz</span>
+            </div>
+            <div class="icon-box" data-filter="stumpf">
+              <i class="fas fa-minus"></i>
+              <span class="icon-label">Stumpf</span>
+            </div>
+            <div class="icon-box" data-filter="doppelfalz">
+              <i class="fas fa-align-justify"></i>
+              <span class="icon-label">Doppelfalz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <section class="hero is-hero-bar">
+    <div class="hero-body">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <h1 class="title" id="orderTitle">Auftrag laden...</h1>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="field has-addons">
+              <div class="control">
+                <button class="button" id="prevOrderBtn">
+                  <span class="icon"><i class="mdi mdi-arrow-left"></i></span>
+                </button>
+              </div>
+              <div class="control">
+                <button class="button" id="nextOrderBtn">
+                  <span class="icon"><i class="mdi mdi-arrow-right"></i></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section is-main-section">
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <div class="card tile is-child dashboard-tile has-background-primary-light">
+          <div class="card-content">
+            <p class="dashboard-label">Elemente</p>
+            <p class="dashboard-value" id="elementsCount">0</p>
+            <div class="tags" id="elementTypesSummary">
+              <!-- Element types summary will be displayed here -->
+            </div>
+            <span class="icon has-text-primary">
+              <i class="fas fa-cube"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="card tile is-child dashboard-tile has-background-info-light">
+          <div class="card-content">
+            <p class="dashboard-label">Zubehör</p>
+            <p class="dashboard-value" id="accessoriesCount">0</p>
+            <span class="icon has-text-info">
+              <i class="fas fa-tools"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="card tile is-child dashboard-tile has-background-warning-light">
+          <div class="card-content">
+            <p class="dashboard-label">Services</p>
+            <p class="dashboard-value" id="servicesCount">0</p>
+            <span class="icon has-text-warning">
+              <i class="fas fa-cog"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="card tile is-child dashboard-tile has-background-success-light">
+          <div class="card-content">
+            <p class="dashboard-label">Gesamtposten</p>
+            <p class="dashboard-value" id="totalItems">0</p>
+            <span class="tag is-success is-light" id="totalPriceTag">0,00 €</span>
+            <span class="icon has-text-success">
+              <i class="fas fa-clipboard-list"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box mb-5">
+      <h4 class="title is-5">Element-Typen</h4>
+      <div class="field is-grouped is-grouped-multiline" id="elementTypesFilter">
+        <p class="control">
+          <span class="element-type-label is-active" data-element-type="all">
+            <span class="icon"><i class="fas fa-th-list"></i></span>
+            <span>Alle</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="holztueren">
+            <span class="icon"><i class="fas fa-door-closed"></i></span>
+            <span>Holztüren</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="stahltueren">
+            <span class="icon"><i class="fas fa-door-open"></i></span>
+            <span>Stahltüren</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="rohrrahmentueren">
+            <span class="icon"><i class="fas fa-grip-lines"></i></span>
+            <span>Rohrrahmentüren</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="tore">
+            <span class="icon"><i class="fas fa-warehouse"></i></span>
+            <span>Tore</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="stahlzargen">
+            <span class="icon"><i class="fas fa-border-style"></i></span>
+            <span>Stahlzargen</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="drehtuerantriebe">
+            <span class="icon"><i class="fas fa-sync-alt"></i></span>
+            <span>Drehtürantriebe</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="haustueren">
+            <span class="icon"><i class="fas fa-home"></i></span>
+            <span>Haustüren</span>
+          </span>
+        </p>
+        <p class="control">
+          <span class="element-type-label" data-element-type="fluchtweg">
+            <span class="icon"><i class="fas fa-running"></i></span>
+            <span>Fluchtwegssicherung</span>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="card has-table has-mobile-sort-spaced">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="fas fa-list"></i></span>
+          Auftragspositionen
+        </p>
+        <a href="#" class="card-header-icon" id="refreshButton">
+          <span class="icon"><i class="fas fa-sync-alt"></i></span>
+        </a>
+      </header>
+      <div class="card-content">
+        <div class="b-table has-pagination">
+          <div class="table-wrapper has-mobile-cards">
+            <table class="table is-fullwidth is-striped is-hoverable is-sortable is-fullwidth">
+              <thead>
+              <tr>
+                <th>Pos.</th>
+                <th>Artikel-Nr.</th>
+                <th>Name</th>
+                <th>Menge</th>
+                <th>Einheit</th>
+                <th>Preis</th>
+                <th>Einheit</th>
+                <th>Gesamtpreis</th>
+                <th>Eigenschaften</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody id="orderItems">
+              <tr>
+                <td colspan="10" class="has-text-centered">
+                  <span class="icon"><i class="fas fa-spinner fa-spin"></i></span> Lade Auftragspositionen...
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="notification">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <div class="buttons has-addons" id="pagination">
+                    <!-- Pagination buttons will be added here -->
+                  </div>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <small id="paginationInfo">Seite 1 von 1</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            © 2025, Order Management System
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div id="edit-modal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Position bearbeiten</p>
+      <button class="delete" aria-label="close" id="closeModalBtn"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="editForm">
+        <div class="field">
+          <label class="label">Artikel-Nr.</label>
+          <div class="control">
+            <input class="input" type="text" id="edit-sku">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" id="edit-name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Beschreibung</label>
+          <div class="control">
+            <textarea class="textarea" id="edit-text"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Menge</label>
+          <div class="control">
+            <input class="input" type="number" id="edit-quantity">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Mengeneinheit</label>
+          <div class="control">
+            <input class="input" type="text" id="edit-quantityUnit">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Preis</label>
+          <div class="control">
+            <input class="input" type="number" step="0.01" id="edit-price">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Währung</label>
+          <div class="control">
+            <input class="input" type="text" id="edit-priceUnit">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Kommission</label>
+          <div class="control">
+            <input class="input" type="text" id="edit-commission">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Kategorie</label>
+          <div class="control">
+            <div class="select">
+              <select id="edit-category">
+                <option value="door">Tür</option>
+                <option value="window">Fenster</option>
+                <option value="accessory">Zubehör</option>
+                <option value="service">Service</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Eigenschaften</label>
+          <div class="control">
+            <div class="checkboxes-container" id="edit-features">
+              <label class="checkbox"><input type="checkbox" value="schallschutz"> Schallschutz</label>
+              <label class="checkbox"><input type="checkbox" value="einbruchschutz"> Einbruchschutz</label>
+              <label class="checkbox"><input type="checkbox" value="brandschutz"> Brandschutz</label>
+              <label class="checkbox"><input type="checkbox" value="rauchschutz"> Rauchschutz</label>
+              <label class="checkbox"><input type="checkbox" value="nassraum"> Nassraum</label>
+              <label class="checkbox"><input type="checkbox" value="feuchtraum"> Feuchtraum</label>
+              <label class="checkbox"><input type="checkbox" value="klimaklasse"> Klimaklasse</label>
+              <label class="checkbox"><input type="checkbox" value="aussentueren"> Außentüren</label>
+              <label class="checkbox"><input type="checkbox" value="pfosten-riegel"> Pfosten-Riegel</label>
+              <label class="checkbox"><input type="checkbox" value="waermedaemmung"> Wärmedämmung</label>
+              <label class="checkbox"><input type="checkbox" value="strahlenschutz"> Strahlenschutz</label>
+              <label class="checkbox"><input type="checkbox" value="barrierefreiheit"> Barrierefreiheit</label>
+              <label class="checkbox"><input type="checkbox" value="einfachfalz"> Einfachfalz</label>
+              <label class="checkbox"><input type="checkbox" value="stumpf"> Stumpf</label>
+              <label class="checkbox"><input type="checkbox" value="doppelfalz"> Doppelfalz</label>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="edit-id">
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" id="saveItemBtn">Speichern</button>
+      <button class="button" id="cancelModalBtn">Abbrechen</button>
+    </footer>
+  </div>
+</div>
+
+<div id="delete-modal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Position löschen</p>
+      <button class="delete" aria-label="close" id="closeDeleteModalBtn"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Sind Sie sicher, dass Sie die Position <strong id="delete-item-name"></strong> löschen möchten?</p>
+      <input type="hidden" id="delete-id">
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" id="confirmDeleteBtn">Löschen</button>
+      <button class="button" id="cancelDeleteModalBtn">Abbrechen</button>
+    </footer>
+  </div>
+</div>
+
+<div id="submit-modal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">An ERP-System senden</p>
+      <button class="delete" aria-label="close" id="closeSubmitModalBtn"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Möchten Sie den aktuellen Auftrag an das ERP-System senden?</p>
+      <div class="notification is-info is-light">
+        Alle Änderungen werden übertragen und können nicht mehr rückgängig gemacht werden.
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" id="confirmSubmitBtn">Senden</button>
+      <button class="button" id="cancelSubmitModalBtn">Abbrechen</button>
+    </footer>
+  </div>
+</div>
+
+
+<!-- Modal HTML code remains unchanged -->
+<!-- ... -->
+
+<!-- Load JavaScript files -->
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
