@@ -41,7 +41,7 @@ pip install -r requirements.txt
 
 ### 4. run the app
 ``` bash 
-python src/main.py
+python src/main.py /path/to/pdf
 ```
 
 
