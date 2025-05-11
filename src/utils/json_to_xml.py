@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 import re
+from pathlib import Path
+
 
 
 def find_first_match(text, patterns):
@@ -55,7 +57,9 @@ def get_xml(json, markdown): #json should be an list
     reparsed = minidom.parseString(rough_string)
     pretty_xml = reparsed.toprettyxml(indent="   ")
 
-    new_output_data = r"..\src\gui\xml\output.xml"
+
+    new_output_data = Path(__file__).parent / ".." / "src" / "gui" / "xml" / "output.xml"
+    new_output_data = new_output_data.resolve()
 
 
     with open(new_output_data, "w", encoding="utf-8") as f:
