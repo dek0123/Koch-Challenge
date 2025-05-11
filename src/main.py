@@ -2,6 +2,7 @@ from utils.extract_json import get_json
 from utils.parse_pdf import parse
 from utils.json_to_xml import get_xml
 from utils.explain import highlight_words_in_pdf
+from utils.webserver import webserver
 from pathlib import Path
 import argparse
 import subprocess
@@ -10,8 +11,8 @@ import subprocess
 
 def main(leistungsverzeichnis: str):
     """
-    takes a Leistungsverzeichnis and converts it into an XML file
-    """
+    # takes a Leistungsverzeichnis and converts it into an XML file
+    # """
     name = Path(leistungsverzeichnis).stem
     out_dir = Path(f"data/output/{name}.md")
     out_dir.parent.mkdir(parents=True, exist_ok=True)
@@ -26,7 +27,6 @@ def main(leistungsverzeichnis: str):
 
     return xml, out_pdf
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert Leistungsverzeichnis PDF to XML and highlight elements.")
     parser.add_argument("pdf_path", help="Path to the Leistungsverzeichnis PDF file")
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
 
     xml_output, highlighted_pdf = main(args.pdf_path)
-    subprocess.run(["python", "src/utils/webserver.py"], check=True)
+    webserver()
     print("XML and highlighted PDF created:")
     print("XML Output:", xml_output)
     print("Highlighted PDF:", highlighted_pdf)
