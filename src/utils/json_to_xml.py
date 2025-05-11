@@ -6,25 +6,53 @@ from pathlib import Path
 
 
 def find_first_match(text, patterns):
+    """
+    Searches the text for the first match of a list of regular expression patterns.
+    
+    Returns the first captured group (group 1) or 'Unbekannt' if no match is found.
+    """
     for pattern in patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             return match.group(1).strip()
     return "Unbekannt"
 
-def find_six_digit_number(text):
-    match = re.search(r"\b\d{6}\b", text)
-    return match.group(0) if match else "Unbekannt"
+
+def get_project_number(text):
+    """
+    Searches the text for a 6-digit project number using predefined patterns.
+
+    First tries to find structured entries like '**Project No.:** 123456'.
+    If no match is found, it falls back to any generic 6-digit number in the text.
+    """
+    projekt_nr = find_first_match(text, [
+        r"\*\*Projekt[-\s]?Nr\.?:\*\*\s*(\d{6})",
+        r"\*\*Projektnummer:?\*\*\s*(\d{6})",
+        r"\*\*Objekt\:\*\*\s*(\d{6})"
+    ])
+    if projekt_nr == "Unbekannt":
+        # Fallback auf generische 6-stellige Zahl
+        match = re.search(r"\b\d{6}\b", text)
+        if match:
+            return match.group(0)
+    
+    return projekt_nr
 
 
 
 def get_xml(json, markdown): #json should be an list
+    """
+    Generates an XML file from the provided JSON data and Markdown text.
+
+    Extracts project information from the Markdown and writes the structured data into an XML file.
+    Returns the path to the generated XML file.
+    """
     # projekt_nr = find_first_match(markdown, [
     #     r"\*\*Projekt[-\s]?Nr\.?:\*\*\s*(.+)",
     #     r"\*\*Projektnummer:?\*\*\s*(.+)",
     #     r"\*\*Objekt\:\*\* (.+)"
     # ])
-    projekt_nr = find_six_digit_number(markdown)
+    projekt_nr = get_project_number(markdown)
 
     objekt = find_first_match(markdown, [
         r"\*\*Objekt\:\*\* (.+)",
