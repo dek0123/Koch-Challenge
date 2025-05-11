@@ -69,7 +69,7 @@ function loadXmlFilesList() {
 }
 
 /**
- * Auto-categorize items based on SKU
+ * Auto-categorize items based on SKU and fix element type detection
  * @param {Object} item - The item to categorize
  */
 function autoCategorizeItem(item) {
@@ -78,7 +78,7 @@ function autoCategorizeItem(item) {
   // Element types
   if (sku.includes('620001')) {
     item.category = 'door';
-    item.elementType = 'holztueren';
+    item.elementType = 'holztueren'; // Consistently use lowercase without special characters
   } else if (sku.includes('670001')) {
     item.category = 'door';
     // Check text to determine if it's Stahltüren, Stahlzargen, or Rohrrahmentüren
@@ -169,8 +169,12 @@ function autoCategorizeItem(item) {
       item.category = 'accessory';
     }
   }
-}
 
+  // Fix: Normalize element type
+  if (item.elementType) {
+    item.elementType = item.elementType.trim().toLowerCase();
+  }
+}
 /**
  * Load and parse an XML file
  * @param {string} filePath - Path to the XML file

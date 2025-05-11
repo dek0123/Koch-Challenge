@@ -75,9 +75,19 @@ function updateCounts() {
     if (item.category === 'door' || item.category === 'window') {
       counts.element++;
       
-      // Count by element type
-      if (item.elementType && counts.elementTypes[item.elementType] !== undefined) {
-        counts.elementTypes[item.elementType]++;
+      // Count by element type - FIX: Normalize element type for more reliable comparison
+      if (item.elementType) {
+        // Convert to lowercase and trim to ensure consistent comparison
+        const elementType = item.elementType.trim().toLowerCase();
+
+        // Check if this element type exists in our counts object
+        if (elementType in counts.elementTypes) {
+          counts.elementTypes[elementType]++;
+        } else {
+          // If not found, add to "other" category
+          counts.elementTypes.other++;
+          console.log("Unknown element type:", item.elementType, "for item:", item);
+        }
       } else {
         counts.elementTypes.other++;
       }
@@ -87,7 +97,10 @@ function updateCounts() {
       counts.service++;
     }
   });
-  
+
+  // Debug: Log the element type counts to see what's being counted
+  console.log("Element type counts:", counts.elementTypes);
+
   // Update dashboard counters
   elementsCount.textContent = counts.element;
   accessoriesCount.textContent = counts.accessory;
@@ -97,21 +110,26 @@ function updateCounts() {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }) + ' €';
-  
+
+  /**
+ * Update element types summary
+ * This function should replace the relevant part of the updateCounts function
+ */
   // Update element types summary
   elementTypesSummary.innerHTML = '';
   let hasElements = false;
-  
+
   for (const [type, count] of Object.entries(counts.elementTypes)) {
     if (count > 0) {
       hasElements = true;
       const tag = document.createElement('span');
-      tag.className = 'tag is-light mr-1 mb-1';
+      // FIXED: Remove margin classes that were causing overlap
+      tag.className = 'tag is-light';
       tag.innerHTML = `${getElementTypeLabel(type)}: ${count}`;
       elementTypesSummary.appendChild(tag);
     }
   }
-  
+
   if (!hasElements) {
     const tag = document.createElement('span');
     tag.className = 'tag is-light';
@@ -125,7 +143,7 @@ function updateCounts() {
  */
 function renderItems() {
   orderItems.innerHTML = '';
-  
+
   const filteredItems = currentOrder.items.filter(item => {
     // Check main category filter (all, element, accessory, service)
     let matchesCategory;
@@ -133,33 +151,33 @@ function renderItems() {
       matchesCategory = true;
     } else if (currentFilter === 'element') {
       // Elements include doors, windows, and any other structural components
-      matchesCategory = item.category === 'door' || item.category === 'window' || 
+      matchesCategory = item.category === 'door' || item.category === 'window' ||
                         (item.elementType && item.elementType !== '');
     } else {
       matchesCategory = item.category === currentFilter;
     }
-    
+
     // Check element type filter if applicable
-    const matchesElementType = currentElementType === 'all' || 
+    const matchesElementType = currentElementType === 'all' ||
                              (item.elementType && item.elementType === currentElementType);
-    
+
     // Check feature filters
-    const matchesFeatures = currentFeatureFilters.length === 0 || 
+    const matchesFeatures = currentFeatureFilters.length === 0 ||
       currentFeatureFilters.every(feature => item.features && item.features.includes(feature));
-    
+
     // Check search term
-    const matchesSearch = searchValue === '' || 
-      item.name.toLowerCase().includes(searchValue.toLowerCase()) || 
+    const matchesSearch = searchValue === '' ||
+      item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
       item.sku.toLowerCase().includes(searchValue.toLowerCase()) ||
       item.commission.toLowerCase().includes(searchValue.toLowerCase());
-    
+
     return matchesCategory && matchesElementType && matchesFeatures && matchesSearch;
   });
-  
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredItems.length);
   const displayedItems = filteredItems.slice(startIndex, endIndex);
-  
+
   if (displayedItems.length === 0) {
     orderItems.innerHTML = `
       <tr>

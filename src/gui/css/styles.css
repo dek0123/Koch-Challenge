@@ -599,10 +599,10 @@
   --text-color-light: #cccccc;
 
   /* More saturated dashboard colors */
-  --primary-bg-light: rgba(72, 95, 199, 0.25);  /* For Elemente */
-  --info-bg-light: rgba(62, 142, 208, 0.25);    /* For Zubehör */
-  --warning-bg-light: rgba(255, 224, 138, 0.25); /* For Services */
-  --success-bg-light: rgba(72, 199, 142, 0.25);  /* For Gesamtposten */
+  --primary-bg-light: rgba(72, 95, 199, 0.75);  /* For Elemente */
+  --info-bg-light: rgba(62, 142, 208, 0.75);    /* For Zubehör */
+  --warning-bg-light: rgba(255, 224, 138, 0.75); /* For Services */
+  --success-bg-light: rgba(72, 199, 142, 0.75);  /* For Gesamtposten */
 }
 
 /* Fix table hover contrast in dark mode */
@@ -683,4 +683,107 @@
 
 .is-dark-mode .element-type-label:hover:not(.is-active) {
   background-color: #3d3d3d;
+}
+
+/* Additional Dark Mode Fixes */
+
+/* Fix notification elements in dark mode */
+.is-dark-mode .notification {
+  background-color: #2d2d2d !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode .notification.is-light {
+  background-color: #252525 !important;
+}
+
+.is-dark-mode .notification.is-info.is-light {
+  background-color: rgba(62, 142, 208, 0.2) !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode .notification.is-success.is-light {
+  background-color: rgba(72, 199, 142, 0.2) !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode .notification.is-warning.is-light {
+  background-color: rgba(255, 224, 138, 0.2) !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode .notification.is-danger.is-light {
+  background-color: rgba(241, 70, 104, 0.2) !important;
+  color: #f5f5f5 !important;
+}
+
+/* Fix pagination elements in dark mode */
+.is-dark-mode #pagination button,
+.is-dark-mode .pagination-link,
+.is-dark-mode .pagination-previous,
+.is-dark-mode .pagination-next {
+  background-color: #2d2d2d !important;
+  border-color: #444 !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode #pagination button:hover,
+.is-dark-mode .pagination-link:hover,
+.is-dark-mode .pagination-previous:hover,
+.is-dark-mode .pagination-next:hover {
+  background-color: #3d3d3d !important;
+  color: white !important;
+}
+
+.is-dark-mode #pagination button.is-active,
+.is-dark-mode .pagination-link.is-current {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Fix pagination info text */
+.is-dark-mode #paginationInfo {
+  color: #cccccc !important;
+}
+
+/* Fix all buttons in dark mode */
+.is-dark-mode .button:not(.is-primary):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger):not(.is-link) {
+  background-color: #2d2d2d !important;
+  border-color: #444 !important;
+  color: #f5f5f5 !important;
+}
+
+.is-dark-mode .button:not(.is-primary):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger):not(.is-link):hover {
+  background-color: #3d3d3d !important;
+  color: white !important;
+}
+/* Fix for the specific overlapping tags problem */
+
+/* Override the margin classes that are causing overlap */
+#elementTypesSummary .tag.mr-1,
+#elementTypesSummary .tag.mb-1 {
+  margin: 0 !important; /* Remove all margins */
+}
+
+/* Set up proper spacing with flexbox gap */
+#elementTypesSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* This creates space between items */
+  margin-top: 0.75rem;
+}
+
+/* Make sure each tag is properly sized */
+#elementTypesSummary .tag {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.tag:not(:last-child) {
+  margin-top: 2rem;}
+
+.tags .tag:not(:last-child) {
+  margin-right: 0;
 }
