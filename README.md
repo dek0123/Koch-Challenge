@@ -37,9 +37,14 @@ cd ...
 
 ```bash
 pip install -r requirements.txt
-````
+```
 
----
+### 4. run the app
+``` bash 
+python src/main.py
+```
+
+
 
 ## Project information
 
