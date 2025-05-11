@@ -31,10 +31,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert Leistungsverzeichnis PDF to XML and highlight elements.")
     parser.add_argument("pdf_path", help="Path to the Leistungsverzeichnis PDF file")
     args = parser.parse_args()
-    subprocess.run(["python", "src/utils/webserver.py"], check=True)
+    
 
 
     xml_output, highlighted_pdf = main(args.pdf_path)
+    subprocess.run(["python", "src/utils/webserver.py"], check=True)
     print("XML and highlighted PDF created:")
     print("XML Output:", xml_output)
     print("Highlighted PDF:", highlighted_pdf)
