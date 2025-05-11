@@ -12,14 +12,20 @@ def find_first_match(text, patterns):
             return match.group(1).strip()
     return "Unbekannt"
 
+def find_six_digit_number(text):
+    match = re.search(r"\b\d{6}\b", text)
+    return match.group(0) if match else "Unbekannt"
+
 
 
 def get_xml(json, markdown): #json should be an list
-    projekt_nr = find_first_match(markdown, [
-        r"\*\*Projekt[-\s]?Nr\.?:\*\*\s*(.+)",
-        r"\*\*Projektnummer:?\*\*\s*(.+)",
-        r"\*\*Objekt\:\*\* (.+)"
-    ])
+    # projekt_nr = find_first_match(markdown, [
+    #     r"\*\*Projekt[-\s]?Nr\.?:\*\*\s*(.+)",
+    #     r"\*\*Projektnummer:?\*\*\s*(.+)",
+    #     r"\*\*Objekt\:\*\* (.+)"
+    # ])
+    projekt_nr = find_six_digit_number(markdown)
+
     objekt = find_first_match(markdown, [
         r"\*\*Objekt\:\*\* (.+)",
         r"\*\*Projektbezeichnung\:\*\* (.+)"
@@ -58,7 +64,7 @@ def get_xml(json, markdown): #json should be an list
     pretty_xml = reparsed.toprettyxml(indent="   ")
 
 
-    new_output_data = Path(__file__).parent / ".." / "src" / "gui" / "xml" / "output.xml"
+    new_output_data = Path(__file__).parent / ".." / "gui" / "xml" / "output.xml"
     new_output_data = new_output_data.resolve()
 
 
