@@ -39,14 +39,14 @@ def get_xml(json, markdown): #json should be an list
 
     for entry in json:  #change for real data
         item = ET.SubElement(items, "item")
-        ET.SubElement(item, "sku").text = entry["sku"]
-        ET.SubElement(item, "name").text = entry["name"]
-        ET.SubElement(item, "text").text = entry["text"].replace("\n", "<br/>").strip()
-        ET.SubElement(item, "quantity").text = entry["quantity"]
-        ET.SubElement(item, "quantityUnit").text = entry["quantityUnit"]
-        ET.SubElement(item, "price").text = ""    #random number
-        ET.SubElement(item, "priceUnit").text = "€"     #took "€"
-        ET.SubElement(item, "purchasePrice").text = entry["purchasePrice"]
+        ET.SubElement(item, "sku").text = str(entry["sku"])
+        ET.SubElement(item, "name").text = str(entry["name"])
+        ET.SubElement(item, "text").text = str(entry["text"]).replace("\n", "<br/>").strip()
+        ET.SubElement(item, "quantity").text = str(entry["quantity"])
+        ET.SubElement(item, "quantityUnit").text = str(entry["quantityUnit"])
+        ET.SubElement(item, "price").text = ""  # empty string is okay
+        ET.SubElement(item, "priceUnit").text = "€"
+        ET.SubElement(item, "purchasePrice").text = str(entry["purchasePrice"])
         ET.SubElement(item, "commission").text = f"LV-POS. {entry['commision']}"
 
 
@@ -55,7 +55,7 @@ def get_xml(json, markdown): #json should be an list
     reparsed = minidom.parseString(rough_string)
     pretty_xml = reparsed.toprettyxml(indent="   ")
 
-    new_output_data = r"..\data\output\output.xml"
+    new_output_data = r"..\src\gui\xml\output.xml"
 
 
     with open(new_output_data, "w", encoding="utf-8") as f:
