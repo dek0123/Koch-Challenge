@@ -79,4 +79,4 @@ def get_json(file_path):
         print("No JSON array found in the text.")
         return None
 
-    return jsons
+    
