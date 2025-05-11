@@ -163,20 +163,20 @@ function renderItems() {
   if (displayedItems.length === 0) {
     orderItems.innerHTML = `
       <tr>
-        <td colspan="10" class="has-text-centered">
+        <td colspan="11" class="has-text-centered">
           Keine Ergebnisse gefunden.
         </td>
       </tr>
     `;
     return;
   }
-  
+
   displayedItems.forEach((item, index) => {
     const tr = document.createElement('tr');
     tr.classList.add(`category-${item.category}`);
-    
+
     const totalPrice = (item.price * item.quantity).toFixed(2);
-    
+
     // Generate feature badges
     let featureBadges = '';
     if (item.features && item.features.length > 0) {
@@ -186,15 +186,16 @@ function renderItems() {
         }
       });
     }
-    
+
     // Add element type badge if available
     if (item.elementType && item.elementType !== '') {
       const elementTypeLabel = getElementTypeLabel(item.elementType);
       featureBadges += `<span class="feature-badge is-primary" title="${elementTypeLabel}"><span class="feature-icon">${getElementTypeIcon(item.elementType)}</span> ${elementTypeLabel}</span>`;
     }
-    
+
     tr.innerHTML = `
       <td data-label="Position">${index + 1 + startIndex}</td>
+      <td data-label="Kommission" class="editable-cell" data-field="commission" data-id="${item.id}">${item.commission}</td>
       <td data-label="Artikel-Nr." class="editable-cell" data-field="sku" data-id="${item.id}">${item.sku}</td>
       <td data-label="Name" class="editable-cell" data-field="name" data-id="${item.id}">${item.name}</td>
       <td data-label="Menge" class="editable-cell" data-field="quantity" data-id="${item.id}">${item.quantity}</td>
@@ -214,10 +215,10 @@ function renderItems() {
         </div>
       </td>
     `;
-    
+
     orderItems.appendChild(tr);
   });
-  
+
   // Add event listeners to editable cells and buttons
   document.querySelectorAll('.editable-cell').forEach(cell => {
     cell.addEventListener('click', () => {
@@ -226,7 +227,7 @@ function renderItems() {
       openEditModal(item);
     });
   });
-  
+
   document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', () => {
       const id = parseInt(button.dataset.id);
@@ -234,7 +235,7 @@ function renderItems() {
       openEditModal(item);
     });
   });
-  
+
   document.querySelectorAll('.delete-button').forEach(button => {
     button.addEventListener('click', () => {
       const id = parseInt(button.dataset.id);
@@ -242,7 +243,7 @@ function renderItems() {
       openDeleteModal(item);
     });
   });
-  
+
   updatePagination();
 }
 
@@ -251,26 +252,26 @@ function renderItems() {
  */
 function updatePagination() {
   pagination.innerHTML = '';
-  
+
   const filteredItems = currentOrder.items.filter(item => {
-    const matchesCategory = currentFilter === 'all' || 
-                           (currentFilter === 'element' ? 
-                           (item.category === 'door' || item.category === 'window') : 
+    const matchesCategory = currentFilter === 'all' ||
+                           (currentFilter === 'element' ?
+                           (item.category === 'door' || item.category === 'window') :
                            item.category === currentFilter);
-    const matchesElementType = currentElementType === 'all' || 
+    const matchesElementType = currentElementType === 'all' ||
                              (item.elementType && item.elementType === currentElementType);
-    const matchesFeatures = currentFeatureFilters.length === 0 || 
+    const matchesFeatures = currentFeatureFilters.length === 0 ||
       currentFeatureFilters.every(feature => item.features && item.features.includes(feature));
-    const matchesSearch = searchValue === '' || 
-      item.name.toLowerCase().includes(searchValue.toLowerCase()) || 
+    const matchesSearch = searchValue === '' ||
+      item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
       item.sku.toLowerCase().includes(searchValue.toLowerCase()) ||
       item.commission.toLowerCase().includes(searchValue.toLowerCase());
-    
+
     return matchesCategory && matchesElementType && matchesFeatures && matchesSearch;
   });
-  
+
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-  
+
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -280,9 +281,9 @@ function updatePagination() {
       currentPage = i;
       renderItems();
     });
-    
+
     pagination.appendChild(button);
   }
-  
+
   paginationInfo.textContent = `Seite ${currentPage} von ${totalPages || 1}`;
 }

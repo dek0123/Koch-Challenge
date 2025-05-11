@@ -17,6 +17,8 @@ let prevOrderBtn;
 let nextOrderBtn;
 let refreshButton;
 let submitButton;
+let saveXmlButton; // New button for saving XML
+let addItemBtn; // New button for adding items
 let toggleSidebarBtn;
 let darkModeToggle;
 let asideMenu;
@@ -45,12 +47,12 @@ let navbarMenu;
 function init() {
   // Initialize DOM elements
   initDOMElements();
-  
+
   // Set up event listeners
   setupUIListeners();
   setupFilterListeners();
   setupModalListeners();
-  
+
   // Load XML files
   loadXmlFilesList();
 }
@@ -75,11 +77,13 @@ function initDOMElements() {
   nextOrderBtn = document.getElementById('nextOrderBtn');
   refreshButton = document.getElementById('refreshButton');
   submitButton = document.getElementById('submitButton');
+  saveXmlButton = document.getElementById('saveXmlButton'); // New button for saving XML
+  addItemBtn = document.getElementById('addItemBtn'); // New button for adding items
   toggleSidebarBtn = document.querySelector('.toggle-sidebar-icon');
   darkModeToggle = document.getElementById('darkModeToggle');
   asideMenu = document.querySelector('.aside');
   app = document.querySelector('#app');
-  
+
   // Modals
   editModal = document.getElementById('edit-modal');
   closeModalBtn = document.getElementById('closeModalBtn');
@@ -93,11 +97,11 @@ function initDOMElements() {
   closeSubmitModalBtn = document.getElementById('closeSubmitModalBtn');
   confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
   cancelSubmitModalBtn = document.getElementById('cancelSubmitModalBtn');
-  
+
   // Filter elements
   categoryFilters = document.querySelectorAll('#categoryFilters a');
   featureFilters = document.querySelectorAll('#featureFilters .icon-box');
-  
+
   // Mobile elements
   asideMobileToggle = document.querySelector('.jb-aside-mobile-toggle');
   navbarMenuToggle = document.querySelector('.jb-navbar-menu-toggle');

@@ -12,6 +12,12 @@ function setupUIListeners() {
   // Toggle dark mode
   darkModeToggle.addEventListener('change', toggleDarkMode);
   
+  // Save XML button
+  saveXmlButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    saveXmlFile();
+  });
+
   // Collapsible sections in sidebar
   document.querySelectorAll('.menu-label').forEach(label => {
     if (label.id) { // Only apply to menu labels with IDs (the ones we want to be collapsible)
@@ -20,7 +26,7 @@ function setupUIListeners() {
       });
     }
   });
-  
+
   // Set initial collapse state
   // We'll start with Element-Typen and Produkteigenschaften collapsed
   if (document.getElementById('elementTypesLabel')) {
@@ -29,26 +35,26 @@ function setupUIListeners() {
   if (document.getElementById('featuresLabel')) {
     toggleSectionCollapse(document.getElementById('featuresLabel'), true);
   }
-  
+
   // Order navigation
   prevOrderBtn.addEventListener('click', () => {
     if (currentOrderIndex > 0) {
       loadOrder(currentOrderIndex - 1);
     }
   });
-  
+
   nextOrderBtn.addEventListener('click', () => {
     if (currentOrderIndex < orders.length - 1) {
       loadOrder(currentOrderIndex + 1);
     }
   });
-  
+
   // Refresh button
   refreshButton.addEventListener('click', (e) => {
     e.preventDefault();
     renderItems();
   });
-  
+
   // Setup mobile navigation toggle
   if (asideMobileToggle) {
     asideMobileToggle.addEventListener('click', function () {
@@ -56,7 +62,7 @@ function setupUIListeners() {
       app.classList.toggle('has-aside-expanded');
     });
   }
-  
+
   if (navbarMenuToggle) {
     navbarMenuToggle.addEventListener('click', function () {
       navbarMenu.classList.toggle('is-active');
@@ -102,15 +108,15 @@ function toggleDarkMode() {
  */
 function toggleSectionCollapse(label, forceCollapse = false) {
   if (!label || !label.id) return; // Safety check
-  
+
   const targetId = label.id.replace('Label', '');
   const targetList = document.getElementById(targetId + 'Filters');
-  
+
   if (!targetList) {
     console.warn(`Element with ID "${targetId}Filters" not found`);
     return; // Exit if the element doesn't exist
   }
-  
+
   if (forceCollapse || !label.classList.contains('is-collapsed')) {
     // Collapse
     label.classList.add('is-collapsed');

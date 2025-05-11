@@ -77,7 +77,7 @@ function loadXmlFile(filePath, index) {
     orderTitle.textContent = 'Lade Auftrag...';
     orderItems.innerHTML = `
     <tr>
-      <td colspan="10" class="has-text-centered">
+      <td colspan="11" class="has-text-centered">
         <span class="icon"><i class="fas fa-spinner fa-spin"></i></span> Lade Auftragspositionen...
       </td>
     </tr>
@@ -170,7 +170,7 @@ function loadXmlFile(filePath, index) {
             orderTitle.textContent = 'Fehler beim Laden des Auftrags';
             orderItems.innerHTML = `
         <tr>
-          <td colspan="10" class="has-text-centered">
+          <td colspan="11" class="has-text-centered">
             Fehler beim Laden der Auftragsdaten.
           </td>
         </tr>
@@ -218,7 +218,7 @@ function autoDetectFeatures(item) {
  */
 function loadOrdersList() {
   ordersList.innerHTML = '';
-  
+
   orders.forEach((order, index) => {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -232,11 +232,11 @@ function loadOrdersList() {
       e.preventDefault();
       loadOrder(index);
     });
-    
+
     if (index === currentOrderIndex) {
       a.classList.add('is-active');
     }
-    
+
     li.appendChild(a);
     ordersList.appendChild(li);
   });
@@ -278,3 +278,93 @@ function autoDetectFeatures(item) {
     return detectedFeatures;
 }
 
+/**
+ * Convert current order to XML format
+ * @returns {string} XML string representation of the order
+ */
+function orderToXml() {
+  if (!currentOrder) return '';
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<order>\n';
+
+  // Add order properties
+  xml += `  <id>${escapeXml(currentOrder.id)}</id>\n`;
+  xml += `  <commission>${escapeXml(currentOrder.commission)}</commission>\n`;
+  xml += `  <type>${escapeXml(currentOrder.type)}</type>\n`;
+  xml += `  <shippingConditionId>${escapeXml(currentOrder.shippingConditionId)}</shippingConditionId>\n`;
+
+  xml += '  <items>\n';
+
+  // Add items
+  currentOrder.items.forEach(item => {
+    xml += '    <item>\n';
+    xml += `      <sku>${escapeXml(item.sku)}</sku>\n`;
+    xml += `      <name>${escapeXml(item.name)}</name>\n`;
+    xml += `      <text>${escapeXml(item.text)}</text>\n`;
+    xml += `      <quantity>${item.quantity}</quantity>\n`;
+    xml += `      <quantityUnit>${escapeXml(item.quantityUnit)}</quantityUnit>\n`;
+    xml += `      <price>${item.price}</price>\n`;
+    xml += `      <priceUnit>${escapeXml(item.priceUnit)}</priceUnit>\n`;
+    xml += `      <commission>${escapeXml(item.commission)}</commission>\n`;
+    xml += `      <category>${escapeXml(item.category)}</category>\n`;
+    xml += `      <elementType>${escapeXml(item.elementType || '')}</elementType>\n`;
+
+    // Add features
+    if (item.features && item.features.length > 0) {
+      xml += '      <features>\n';
+      item.features.forEach(feature => {
+        xml += `        <feature>${escapeXml(feature)}</feature>\n`;
+      });
+      xml += '      </features>\n';
+    }
+
+    xml += '    </item>\n';
+  });
+
+  xml += '  </items>\n';
+  xml += '</order>';
+
+  return xml;
+}
+
+/**
+ * Escape special characters for XML
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped text
+ */
+function escapeXml(text) {
+  if (!text) return '';
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+/**
+ * Save current order as XML file
+ */
+function saveXmlFile() {
+  if (!currentOrder) {
+    alert('Kein Auftrag geladen!');
+    return;
+  }
+
+  const xml = orderToXml();
+  const filename = `order_${currentOrder.commission || currentOrder.id}.xml`;
+
+  // Create a blob from the XML string
+  const blob = new Blob([xml], { type: 'application/xml' });
+
+  // Create a temporary link element
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+
+  // Append to the document, click it, and remove it
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
