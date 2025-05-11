@@ -109,21 +109,42 @@ function toggleDarkMode() {
 function toggleSectionCollapse(label, forceCollapse = false) {
   if (!label || !label.id) return; // Safety check
 
-  const targetId = label.id.replace('Label', '');
-  const targetList = document.getElementById(targetId + 'Filters');
+  // Use correct mapping for the target element ID
+  let targetElementId;
+  if (label.id === 'elementTypesLabel') {
+    targetElementId = 'elementTypeFilters'; // Note: not elementTypesFilters
+  } else if (label.id === 'featuresLabel') {
+    targetElementId = 'featureFilters'; // Note: not featuresFilters
+  } else if (label.id === 'categoryLabel') {
+    targetElementId = 'categoryFilters';
+  } else {
+    // Fallback to the previous logic
+    const baseId = label.id.replace('Label', '');
+    targetElementId = baseId + 'Filters';
+  }
 
-  if (!targetList) {
-    console.warn(`Element with ID "${targetId}Filters" not found`);
+  const targetElement = document.getElementById(targetElementId);
+
+  if (!targetElement) {
+    console.warn(`Element with ID "${targetElementId}" not found`);
     return; // Exit if the element doesn't exist
   }
 
-  if (forceCollapse || !label.classList.contains('is-collapsed')) {
-    // Collapse
-    label.classList.add('is-collapsed');
-    targetList.classList.add('is-collapsed');
+  if (forceCollapse || !targetElement.classList.contains('is-hidden')) {
+    // Collapse - hide the element
+    targetElement.classList.add('is-hidden');
+    const icon = label.querySelector('.icon i');
+    if (icon) {
+      icon.classList.remove('fa-chevron-down');
+      icon.classList.add('fa-chevron-right');
+    }
   } else {
-    // Expand
-    label.classList.remove('is-collapsed');
-    targetList.classList.remove('is-collapsed');
+    // Expand - show the element
+    targetElement.classList.remove('is-hidden');
+    const icon = label.querySelector('.icon i');
+    if (icon) {
+      icon.classList.remove('fa-chevron-right');
+      icon.classList.add('fa-chevron-down');
+    }
   }
 }

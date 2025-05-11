@@ -554,3 +554,133 @@
 .box{
     background-color: var(--border-color);
 }
+
+/* Add these styles to your CSS file (styles.css) */
+
+/* Make menu labels clickable with a pointer cursor */
+.menu-label {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0.75em;
+  margin-bottom: 0.5em;
+}
+
+/* Proper spacing for the collapse icon */
+.menu-label .icon {
+  margin-left: 0.5em;
+}
+
+/* Hide the collapsed sections */
+.is-hidden {
+  display: none !important;
+}
+
+/* Add hover effect to menu labels */
+.menu-label:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Style for dark mode */
+.is-dark-mode .menu-label:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Add these styles to your styles.css file */
+
+/* Dark mode theme improvements */
+.is-dark-mode {
+  /* Improve base colors */
+  --bg-color: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2d2d2d;
+  --text-color: #f5f5f5;
+  --text-color-light: #cccccc;
+
+  /* More saturated dashboard colors */
+  --primary-bg-light: rgba(72, 95, 199, 0.25);  /* For Elemente */
+  --info-bg-light: rgba(62, 142, 208, 0.25);    /* For Zubehör */
+  --warning-bg-light: rgba(255, 224, 138, 0.25); /* For Services */
+  --success-bg-light: rgba(72, 199, 142, 0.25);  /* For Gesamtposten */
+}
+
+/* Fix table hover contrast in dark mode */
+.is-dark-mode .table tr:hover {
+  background-color: #3a3a3a !important;
+  color: white !important;
+}
+
+/* Fix table striped rows in dark mode */
+.is-dark-mode .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: #252525 !important;
+}
+
+/* Fix table header text in dark mode */
+.is-dark-mode .table th {
+  color: white !important;
+}
+
+/* Fix table text color */
+.is-dark-mode .table td {
+  color: var(--text-color) !important;
+}
+
+/* Improve dashboard tiles in dark mode */
+.is-dark-mode .has-background-primary-light {
+  background-color: var(--primary-bg-light) !important;
+}
+
+.is-dark-mode .has-background-info-light {
+  background-color: var(--info-bg-light) !important;
+}
+
+.is-dark-mode .has-background-warning-light {
+  background-color: var(--warning-bg-light) !important;
+}
+
+.is-dark-mode .has-background-success-light {
+  background-color: var(--success-bg-light) !important;
+}
+
+/* Improve category colors in dark mode */
+.is-dark-mode .category-door {
+  background-color: rgba(72, 199, 142, 0.2) !important;
+}
+
+.is-dark-mode .category-accessory {
+  background-color: rgba(72, 95, 199, 0.2) !important;
+}
+
+.is-dark-mode .category-service {
+  background-color: rgba(255, 184, 77, 0.2) !important;
+}
+
+.is-dark-mode .category-window {
+  background-color: rgba(231, 76, 60, 0.2) !important;
+}
+
+/* Ensure all elements have proper contrast in dark mode */
+.is-dark-mode .card-header-title,
+.is-dark-mode .title,
+.is-dark-mode .label,
+.is-dark-mode .modal-card-title,
+.is-dark-mode strong {
+  color: white !important;
+}
+
+/* Improve feature badges in dark mode */
+.is-dark-mode .feature-badge {
+  background-color: #3a3a3a;
+  color: white;
+}
+
+/* Improve element type labels in dark mode */
+.is-dark-mode .element-type-label:not(.is-active) {
+  background-color: #2d2d2d;
+  color: #f5f5f5;
+}
+
+.is-dark-mode .element-type-label:hover:not(.is-active) {
+  background-color: #3d3d3d;
+}

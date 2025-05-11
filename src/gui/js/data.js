@@ -69,6 +69,109 @@ function loadXmlFilesList() {
 }
 
 /**
+ * Auto-categorize items based on SKU
+ * @param {Object} item - The item to categorize
+ */
+function autoCategorizeItem(item) {
+  const sku = item.sku.trim();
+
+  // Element types
+  if (sku.includes('620001')) {
+    item.category = 'door';
+    item.elementType = 'holztueren';
+  } else if (sku.includes('670001')) {
+    item.category = 'door';
+    // Check text to determine if it's Stahltüren, Stahlzargen, or Rohrrahmentüren
+    const lowerText = (item.name + ' ' + item.text).toLowerCase();
+    if (lowerText.includes('stahlzarge') || lowerText.includes('stahlzargen')) {
+      item.elementType = 'stahlzargen';
+    } else if (lowerText.includes('rohrrahmen')) {
+      item.elementType = 'rohrrahmentueren';
+    } else {
+      item.elementType = 'stahltueren';
+    }
+  } else if (sku.includes('660001')) {
+    item.category = 'door';
+    item.elementType = 'haustueren';
+  } else if (sku.includes('610001')) {
+    item.category = 'door';
+    // Glastüren don't have a specific elementType in the existing list,
+    // so we'll add them to a generic type
+    item.elementType = 'other';
+  } else if (sku.includes('680001')) {
+    item.category = 'door';
+    item.elementType = 'tore';
+  }
+  // Accessories
+  else if (sku.includes('240001')) {
+    item.category = 'accessory';
+    // Beschläge
+  } else if (sku.includes('330001')) {
+    item.category = 'accessory';
+    // Türstopper
+  } else if (sku.includes('450001')) {
+    item.category = 'accessory';
+    // Lüftungsgitter
+  } else if (sku.includes('290001')) {
+    item.category = 'accessory';
+    // Türschließer
+  } else if (sku.includes('360001')) {
+    item.category = 'accessory';
+    // Schlösser / E-Öffner
+  }
+  // Services
+  else if (sku.includes('DL8110016')) {
+    item.category = 'service';
+    // Wartung
+  } else if (sku.includes('DL5010008')) {
+    item.category = 'service';
+    // Stundenlohnarbeiten
+  } else if (sku.includes('DL5019990')) {
+    item.category = 'service';
+    // Sonstige Arbeiten
+  }
+
+  // If no specific category was determined, try to infer from name/text
+  if (!item.category) {
+    const lowerText = (item.name + ' ' + item.text).toLowerCase();
+    if (lowerText.includes('tür') || lowerText.includes('fenster') || lowerText.includes('tor')) {
+      item.category = 'door';
+
+      // Try to determine element type
+      if (lowerText.includes('holz')) {
+        item.elementType = 'holztueren';
+      } else if (lowerText.includes('stahl')) {
+        if (lowerText.includes('zarge')) {
+          item.elementType = 'stahlzargen';
+        } else {
+          item.elementType = 'stahltueren';
+        }
+      } else if (lowerText.includes('rohrrahmen')) {
+        item.elementType = 'rohrrahmentueren';
+      } else if (lowerText.includes('haus')) {
+        item.elementType = 'haustueren';
+      } else if (lowerText.includes('tor')) {
+        item.elementType = 'tore';
+      } else if (lowerText.includes('fluchtweg')) {
+        item.elementType = 'fluchtweg';
+      } else {
+        item.elementType = 'other';
+      }
+    } else if (lowerText.includes('beschlag') || lowerText.includes('stopper') ||
+              lowerText.includes('gitter') || lowerText.includes('schließer') ||
+              lowerText.includes('schloss') || lowerText.includes('öffner')) {
+      item.category = 'accessory';
+    } else if (lowerText.includes('wartung') || lowerText.includes('stundenlohn') ||
+              lowerText.includes('aufmaß') || lowerText.includes('einrichtung')) {
+      item.category = 'service';
+    } else {
+      // Default category if nothing else matches
+      item.category = 'accessory';
+    }
+  }
+}
+
+/**
  * Load and parse an XML file
  * @param {string} filePath - Path to the XML file
  * @param {number} index - Index in the orders array
@@ -117,6 +220,9 @@ function loadXmlFile(filePath, index) {
                     elementType: itemEl.querySelector('elementType')?.textContent || '',
                     features: []
                 };
+
+                // Auto-categorize based on SKU
+                autoCategorizeItem(item);
 
                 // Parse features
                 const featuresEl = itemEl.querySelector('features');
