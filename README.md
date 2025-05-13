@@ -60,25 +60,19 @@ The aim of this project is to develop a system that automatically analyzes and s
 
 ### Project structure
 
-```mermaid
+```bash
 ├── data/
-│ ├── database/
-│ │ └── sku_database.sqlite
-│ ├── input/
-│ │ ├── catalog.csv
-│ │ └── examples/
-│ └── output/
-│   └── [XML files]
-│
 ├── docs/
-│ └── [documentation]
-│
 └── src/
-  ├── document_parser.py
-  ├── product_classifier.py
-  ├── xml_generator.py
-  └── interface.py
+    ├── utils/
+    ├── gui/
+    │    └── xml
+    │         └── output.xml
+    └── main.py
+    
 ```
+
+
 
 - **/data**: Data and product catalog  
 - **/docs**: Documentation and guidelines  
